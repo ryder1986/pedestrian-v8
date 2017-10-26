@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>../hogcascade_pedestrians.xml</file>
+    </qresource>
+</RCC>
