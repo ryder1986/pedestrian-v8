@@ -20,12 +20,16 @@ public:
     VideoSrc(QString path)
     {
         running=false;
-        wait_duration=300;//waiting 200ms  before restart video src
+    //    wait_duration=300;//waiting 200ms  before restart video src
         tick=0;
         video_connected_flag=true;
         memset(url,0,PATH_LEN);
         strcpy(url,path.toStdString().data());
         p_cap= cvCreateFileCapture(url);  //读取视频
+
+        width=cvGetCaptureProperty(p_cap,CV_CAP_PROP_FRAME_WIDTH);
+        height=cvGetCaptureProperty(p_cap,CV_CAP_PROP_FRAME_HEIGHT);
+        //    prt(info,"video widtbh %d  ",ret);
         if(p_cap==NULL){
             prt(info,"video src start  %s err  ",url);
             video_connected_flag=false;
@@ -36,21 +40,31 @@ public:
         //            emit video_disconnected();
         //        else
         //            emit video_connected();
-        timer=new QTimer();
+
+
+
+
+    //    timer=new QTimer();
         //  tmr->singleShot(1000,this,SLOT(time_up()));
 
         //    prt(info," shot afer 100 ms")
         // QTimer::singleShot(1000,this,SLOT(time_up()));
-        connect(timer,SIGNAL(timeout()),this,SLOT(time_up()));
-        timer->start(wait_duration);
+     //   connect(timer,SIGNAL(timeout()),this,SLOT(time_up()));
+     //   timer->start(wait_duration);
+
+
     }
     ~VideoSrc()
     {
-        //   cap_lock.lock();
-        timer->stop();
 
-        disconnect(timer,SIGNAL(timeout()),this,SLOT(time_up()));
-        delete timer;
+
+        //   cap_lock.lock();
+       // timer->stop();
+
+      //  disconnect(timer,SIGNAL(timeout()),this,SLOT(time_up()));
+     //   delete timer;
+
+
         //     QThread::sleep(1);
         //   prt(info," delete src");
 
@@ -84,6 +98,7 @@ public:
         //        ret_img= cvRetrieveFrame(p_cap);
         //   prt(info,"try to query");
         //    CV_CAP_PROP_XI_TIMEOUT
+        //CV_CAP_PROP_FRAME_WIDTH
         //    int ret=cvSetCaptureProperty(p_cap,CV_CAP_PROP_XI_TIMEOUT,999);
         // double pro=cvGetCaptureProperty(p_cap,CV_CAP_PROP_XI_TIMEOUT);
         //  prt(info," set %d ,opecv time out %d",ret ,pro);
@@ -145,11 +160,14 @@ signals:
 
 private:
     bool running;
-    int wait_duration;
+ //   int wait_duration;
     int tick;
-    QTimer *timer;
+  //  QTimer *timer;
     CvCapture *p_cap;
     char url[PATH_LEN];
+    int width;
+    int height;
+
     //  QMutex cap_lock;
 };
 

@@ -77,7 +77,7 @@ public:
         //        timer=new QTimer();
         //        connect(timer,SIGNAL(timeout()),this,SLOT(tick_check_frame_rate()));
         //        timer->start(1000);
-        //prt(info,"1");
+
         work_lock.lock();// lock need because we use videosrc(function "run" use it too)
         p_video_src=new VideoSrc(data.ip);
 
@@ -87,6 +87,7 @@ public:
         //   this->start(NormalPriority);
         //    connect(this,SIGNAL(restart_source()),this,SLOT(restart_video()));
         work_lock.unlock();
+
     }
     void close_video_src()
     {
@@ -193,6 +194,7 @@ public slots:
         close_video_src();
         prt(info,"restarting   %s",data.ip.toStdString().data());
         //  QThread::msleep(1000);
+
         start_video_src();
 
         //   prt(info,"3restarting   %s",data.ip.toStdString().data());
