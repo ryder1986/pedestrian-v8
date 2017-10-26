@@ -26,6 +26,11 @@ public:
         pos_x=100;
         pos_y=100;
         tick=0;
+
+        frame.resize(640*480*3);
+        frame=Mat(640,480,CV_8UC3);
+
+        memset(frame.data,100,640*480*3);
     }
 
 
@@ -294,10 +299,10 @@ public slots:
         {
 
             prt(info,"render set frame fail");
-            frame.resize(640*480*3);
-            frame=Mat(640,480,CV_8UC3);
+//            frame.resize(640*480*3);
+//            frame=Mat(640,480,CV_8UC3);
 
-            memset(frame.data,100,640*480*3);
+//            memset(frame.data,100,640*480*3);
             //    char tmp1=*f.data;
             //   char tmp=*frame.data;
 
@@ -318,6 +323,7 @@ private:
     int tick;
     int tickmat;
     Mat frame;
+ //   Mat empty_frame;
     int pos_x;
     int pos_y;
 

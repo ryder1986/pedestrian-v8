@@ -160,10 +160,10 @@ protected:
             //prt(info,"runing");
             if(work()!=true){
                 emit restart_source();
-                QThread::msleep(2000);//try work after 200ms
+                QThread::msleep(100);//try work after 200ms
                 //      break;
             }
-            QThread::msleep(10);
+           // QThread::msleep(10);
         }
         //  quit_work=true;//tell main loop that you can quit
     }

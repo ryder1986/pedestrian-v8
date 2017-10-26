@@ -11,7 +11,15 @@
         {
             "ip": "1",
             "port": 554
+        },
+        {
+            "ip": "1",
+            "port": 554
+        },
+        {
+            "ip": "1",
+            "port": 554
         }
     ],
-    "camera_total_number": 3
+    "camera_total_number": 5
 }
