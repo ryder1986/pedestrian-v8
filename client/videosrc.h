@@ -19,14 +19,11 @@ public:
     bool video_connected_flag;
     VideoSrc(QString path)
     {
-        running=false;
-    //    wait_duration=300;//waiting 200ms  before restart video src
-        tick=0;
+
         video_connected_flag=true;
         memset(url,0,PATH_LEN);
         strcpy(url,path.toStdString().data());
-        p_cap= cvCreateFileCapture(url);  //读取视频
-
+        p_cap= cvCreateFileCapture(url);  //create video source
         width=cvGetCaptureProperty(p_cap,CV_CAP_PROP_FRAME_WIDTH);
         height=cvGetCaptureProperty(p_cap,CV_CAP_PROP_FRAME_HEIGHT);
         //    prt(info,"video widtbh %d  ",ret);
@@ -34,8 +31,9 @@ public:
             prt(info,"video src start  %s err  ",url);
             video_connected_flag=false;
         }
-        else
-        { prt(info,"video src  start %s ok  ",url)}
+        else {
+            prt(info,"video src  start %s ok  ",url);
+        }
         //        if(p_cap==NULL)
         //            emit video_disconnected();
         //        else
@@ -44,32 +42,22 @@ public:
 
 
 
-    //    timer=new QTimer();
+        //    timer=new QTimer();
         //  tmr->singleShot(1000,this,SLOT(time_up()));
 
         //    prt(info," shot afer 100 ms")
         // QTimer::singleShot(1000,this,SLOT(time_up()));
-     //   connect(timer,SIGNAL(timeout()),this,SLOT(time_up()));
-     //   timer->start(wait_duration);
-
-
+        //   connect(timer,SIGNAL(timeout()),this,SLOT(time_up()));
+        //   timer->start(wait_duration);
     }
     ~VideoSrc()
     {
-
-
         //   cap_lock.lock();
-       // timer->stop();
-
-      //  disconnect(timer,SIGNAL(timeout()),this,SLOT(time_up()));
-     //   delete timer;
-
-
+        // timer->stop();
+        //  disconnect(timer,SIGNAL(timeout()),this,SLOT(time_up()));
+        //   delete timer;
         //     QThread::sleep(1);
         //   prt(info," delete src");
-
-
-
         //    disconnect(tmr,SIGNAL(timeout()),this,SLOT(time_up()));
         cvReleaseCapture(&p_cap);
         p_cap=NULL;
@@ -80,9 +68,6 @@ public:
     Mat *get_frame()
     {
 
-        //   cap_lock.lock();
-        tick++;
-        //prt(info,"fetchingframe %d",tick);
         //     tmr->singleShot(10,this,SLOT(time_up()));
         int err=0;
         if(p_cap==NULL){
@@ -105,73 +90,41 @@ public:
         //      CV_CAP_PROP_XI_TIMEOUT
         //prt(info,"  start query 1 frame ");
         ret_img=cvQueryFrame(p_cap);
-        // prt(info,"  query 1 frame done");
-       //  Mat *ret_mat=new Mat(ret_img,0);
-        Mat(ret_img).copyTo(testmat);
+        Mat(ret_img).copyTo(mat_rst);
         if(ret_img==NULL){
-            //     prt(info,"get video source fail, source url:%s",url);
             err=1;
             //     std::this_thread::sleep_for(chrono::milliseconds(1000));
             //    QThread::sleep(1);
             if(video_connected_flag==true)
             {
-                prt(info,"%s disconnected",url);
+                //    prt(info,"%s disconnected",url);
                 video_connected_flag=false;
-
             }
-            //    emit video_disconnected();
-            //     prt(info,"sleep done");
         }else{
-            running=true;
-            //    prt(info,"%s runing",url);
             if(video_connected_flag==false)
             {
-                prt(info,"%s connected",url);
+                //     prt(info,"%s connected",url);
                 video_connected_flag=true;
-                //        emit video_connected();
             }
-            //    prt(info,"get video source url:  size %d",ret_img->imageSize);
         }
-        //   cap_lock.unlock();
         if(err)
             return NULL;
         else
-         //   return ret_mat;
-        return &testmat;
+            return &mat_rst;
 
-              }
+    }
     char *get_url(){
         return url;
     }
 public slots:
-    void time_up()
-    {
-
-        //prt(info,"@@@@@@@@@@@@@@@@@@@@@ checking per %d seconds",wait_duration/1000);
-        if(running == false)
-        {
-            //    prt(info,"################## source need restart ");
-            //  emit video_disconnected();
-        }
-        running= false;
-        //     QTimer::singleShot(wait_duration,this,SLOT(time_up()));
-    }
 
 signals:
-    //    void video_connected();
-    void video_disconnected();
-
 private:
-    bool running;
- //   int wait_duration;
-    int tick;
-  //  QTimer *timer;
     CvCapture *p_cap;
     char url[PATH_LEN];
     int width;
     int height;
-    Mat testmat;
-    //  QMutex cap_lock;
+    Mat mat_rst;
 };
 
 #endif // VIDEOSRC_H

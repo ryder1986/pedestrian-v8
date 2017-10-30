@@ -180,7 +180,11 @@ public slots:
 
     void tick_check_frame_rate()
     {
-        prt(frame_rate,"video %s frame rate %d",p_video_src->get_url(),tick-tick_last);
+        int rate=tick-tick_last;
+        prt(frame_rate,"video %s frame rate %d",p_video_src->get_url(),rate);
+        if(rate<10){
+            prt(info,"video %s frame rate  drop to %d",p_video_src->get_url(),rate);
+        }
         tick_last=tick;
     }
 
@@ -237,23 +241,19 @@ public slots:
             //            }
             //    IplImage *f=p_video_src->fetch_frame();
             Mat *f=p_video_src->get_frame();
-            if(1){
-                if(f==NULL){
-                    prt(info,"No frame get from %s",data.ip.toStdString().data());
-                    video_handler.set_null_frame();
-                    //    source_disconnected();
-                    ret=false;
-                }else
-                {
-                    video_handler.set_frame(f);
-                    video_handler.work(ba);
-                    //prt(info,"src %s ret %d",p_video_src->get_url(),ret==true?1:0);
-                }
-            }else{
-                //      prt(info,"sleep start");
-                //     std::this_thread::sleep_for(chrono::milliseconds(2000));
-                //    prt(info,"sleep end");
+
+            if(f==NULL){
+                prt(info,"No frame get from %s",data.ip.toStdString().data());
+                video_handler.set_null_frame();
+                //    source_disconnected();
+                ret=false;
+            }else
+            {
+                video_handler.set_frame(f);
+                video_handler.work(ba);
+//                prt(info,"src %s ret %d",p_video_src->get_url(),ret==true?1:0);
             }
+
         }else{
             prt(info,"%s p_video_src NULL",data.ip.toStdString().data());
             //    source_disconnected();
@@ -312,7 +312,7 @@ public:
 
     void use_camera_config()
     {
-    //    int num=0;
+        //    int num=0;
         foreach (Camera *c, cams) {
             delete c;
         }
@@ -327,7 +327,7 @@ public:
             //   if(i==0)
             //   layout->addWidget(&c->render,i,i);
         }
-    //    num=cams.size();
+        //    num=cams.size();
     }
     QList <Camera *>  &get_cam()
     {
