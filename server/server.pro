@@ -30,4 +30,5 @@ DEFINES+=SERVER
 RESOURCES += \
     hog-res.qrc
 QMAKE_LFLAGS+="-Wl,--rpath=/root/sources/opencv-2.4.9/build/__install/lib"
-QMAKE_CFLAGS+="-w"
+
+QMAKE_CXXFLAGS +="-w"
