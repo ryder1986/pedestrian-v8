@@ -18,7 +18,6 @@ class ClientCameraManager:public CameraManager{
 public:
     ClientCameraManager() :CameraManager("/root/repo-github/pedestrian-v8/client/config.json")
     {
-        //     p_cfg=new Config(":/config.json");
 
     }
     ~ClientCameraManager()
@@ -29,25 +28,16 @@ public:
     void reconfig_camera(QGridLayout *g)
     {
         QList <Camera *> &c=get_cam();
-        use_camera_config();
+        use_camera_config();// delete all exist cameras , add all configured cameras;
         int size=get_size();
         for(int i=0;i<size;i++){
-            QWidget *render=(c[i])->get_render();
-            g->addWidget(render,(i)/4,(i)%4);
+            QWidget *render=(c[i])->get_render();//get render from camera
+            g->addWidget(render,(i)/4,(i)%4);//set camera in window
         }
 
     }
 public slots:
-    void set_camera_layout(int index, QByteArray  ba)
-    {
-//          QList <Camera *> &c=get_cam();
-//          c[index]->set_data(ba);
-     //   emit set_overlay(index,ba);
-
-        //TODO:set overylay here
-    }
 signals:
-    void set_overlay(int index, QByteArray  ba);
 private:
 
 };
