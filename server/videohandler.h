@@ -10,6 +10,7 @@
 #include <opencv2/objdetect/objdetect.hpp>
 
 #include <QObject>
+#include <QThread>
 //#include "videosrc.h"
 using namespace cv;
 using namespace std;
@@ -80,8 +81,15 @@ public:
             //   frame.create(frame_ori->height,frame_ori->width,CV_8U);
             //   memcpy(frame.data,frame_ori->imageData,frame_ori->imageSize);
            // Mat frame(frame_ori);
+
+
+         // int test=  waitKey(1);
+           //     printf("%d\n",test);
             Mat frame(*frame_mat);
-          //   imshow("url",frame);
+         //   imshow("url",frame);
+
+        //    QThread::msleep(1);
+
         //   return 0;
 
             //  cout << "opened " << endl;
@@ -100,7 +108,7 @@ public:
                 //   if (frame_num % 3 == 0)
                 if (1)
                 {
-                    //resize(frame,frame,Size(frame.cols / 2, frame.rows / 2),CV_INTER_LINEAR);
+                    resize(frame,frame,Size(frame.cols / 2, frame.rows / 2),CV_INTER_LINEAR);
                     //resize(frame,frame,Size(704, 576),CV_INTER_LINEAR);
                     cvtColor(frame, gray_frame, CV_BGR2GRAY);
                     //  gray_frame=frame;
@@ -112,7 +120,7 @@ public:
 
                     //Mat detect_area = gray_frame(rect);
                     //cascade.detectMultiScale(detect_area,objs,1.1,3);
-                    cascade.detectMultiScale(gray_frame, objs, 1.1, 3);
+                          cascade.detectMultiScale(gray_frame, objs, 1.1, 3);
 
 
                     vector<Rect>::iterator it = objs.begin();
@@ -152,10 +160,23 @@ public:
                         it++;
                     }
 
+
+
+
+#if 0
+                    imshow("result", frame);
+                    QThread::msleep(1);
+
+
+     #endif
+
+
+//                    waitKey(1);
+
                  //   rectangle(frame,rect,Scalar(0,255,0),2);
-               //     imshow("result", frame);
+              // imshow("result", frame);
                     //outputVideo << frame;
-                    //   waitKey(1);
+               //   waitKey(1);
                     objs.clear();
                 }
           //      emit send_rst(NULL,1);

@@ -185,10 +185,10 @@ public slots:
     void tick_check_frame_rate()
     {
         int rate=tick-tick_last;
-        prt(frame_rate,"video %s frame rate %d",src_url.toStdString().data(),rate);
-        if(rate<10){
-            prt(info,"video %s frame rate  drop to %d",src_url.toStdString().data(),rate);
-        }
+        prt(info,"video %s frame rate %d",src_url.toStdString().data(),rate);
+//        if(rate<10){
+//            prt(info,"video %s frame rate  drop to %d",src_url.toStdString().data(),rate);
+//        }
         tick_last=tick;
     }
 
