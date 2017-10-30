@@ -106,7 +106,8 @@ public:
         //prt(info,"  start query 1 frame ");
         ret_img=cvQueryFrame(p_cap);
         // prt(info,"  query 1 frame done");
-        Mat *ret_mat=new Mat(ret_img,0);
+       //  Mat *ret_mat=new Mat(ret_img,0);
+        Mat(ret_img).copyTo(testmat);
         if(ret_img==NULL){
             //     prt(info,"get video source fail, source url:%s",url);
             err=1;
@@ -135,8 +136,10 @@ public:
         if(err)
             return NULL;
         else
-            return ret_mat;
-    }
+         //   return ret_mat;
+        return &testmat;
+
+              }
     char *get_url(){
         return url;
     }
@@ -167,7 +170,7 @@ private:
     char url[PATH_LEN];
     int width;
     int height;
-
+    Mat testmat;
     //  QMutex cap_lock;
 };
 

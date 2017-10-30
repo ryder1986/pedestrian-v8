@@ -27,10 +27,10 @@ public:
         pos_y=100;
         tick=0;
 
-        frame.resize(640*480*3);
-        frame=Mat(640,480,CV_8UC3);
+        frame.resize(VIDEO_WIDTH*VIDEO_HEIGHT*3);
+        frame=Mat(VIDEO_WIDTH,VIDEO_HEIGHT,CV_8UC3);
 
-        memset(frame.data,100,640*480*3);
+        memset(frame.data,100,VIDEO_WIDTH*VIDEO_HEIGHT*3);
     }
 
 
@@ -148,13 +148,19 @@ public:
         Mat rgb_frame=frame;
         // cvtColor(frame,rgb_frame,CV_YUV2BGR);
         Mat yuv_frame;
-        //     cvtColor(rgb_frame,yuv_frame,CV_RGB2GRAY);
+        imwrite("test.jpg",rgb_frame);
+        int test=*rgb_frame.data;
+
+       // if(20<test<128){
+         //   if(1){
+        ////     cvtColor(rgb_frame,yuv_frame,CV_RGB2GRAY);
         cvtColor(rgb_frame,yuv_frame,CV_BGR2RGB);
         QImage  img = QImage((const uchar*)(yuv_frame.data),
                              yuv_frame.cols,yuv_frame.rows,
                              yuv_frame.cols*yuv_frame.channels(),
                              QImage::Format_RGB888);
         painter.drawImage(QRect(0,0,this->width(),this->height()),img);
+     //   }
         painter.endNativePainting();
 
 #endif
@@ -314,9 +320,9 @@ public slots:
 
 private:
     int tmp_tick;
-    char yuv_buf[640*480*3/2];
-    char rgb_buf[640*480*3];
-    char rgb_buf_tmp[640*480*3];
+//    char yuv_buf[640*480*3/2];
+//    char rgb_buf[640*480*3];
+//    char rgb_buf_tmp[640*480*3];
     int video_width;
     int video_height;
     int pressed_x,pressed_y,pressed;

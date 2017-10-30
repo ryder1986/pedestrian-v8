@@ -164,7 +164,7 @@ protected:
                 QThread::msleep(100);//try work after 200ms
                 //      break;
             }
-           // QThread::msleep(10);
+            QThread::msleep(3);
         }
         //  quit_work=true;//tell main loop that you can quit
     }
