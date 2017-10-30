@@ -160,12 +160,14 @@ protected:
         {
             //prt(info,"runing");
             if(work()!=true){
-                emit restart_source();
+                restart_video();
+                //  emit restart_source();
                 QThread::msleep(100);//try work after 200ms
                 //      break;
             }
-            QThread::msleep(3);
+            QThread::msleep(30);
         }
+        close_video_src();
         //  quit_work=true;//tell main loop that you can quit
     }
 
@@ -180,12 +182,12 @@ public slots:
 
     void tick_check_frame_rate()
     {
-        int rate=tick-tick_last;
-        prt(frame_rate,"video %s frame rate %d",p_video_src->get_url(),rate);
-        if(rate<10){
-            prt(info,"video %s frame rate  drop to %d",p_video_src->get_url(),rate);
-        }
-        tick_last=tick;
+//        int rate=tick-tick_last;
+//        prt(frame_rate,"video %s frame rate %d",p_video_src->get_url(),rate);
+//        if(rate<10){
+//            prt(info,"video %s frame rate  drop to %d",p_video_src->get_url(),rate);
+//        }
+//        tick_last=tick;
     }
 
     //    void source_connected()
@@ -196,7 +198,7 @@ public slots:
     void restart_video()
     {
         close_video_src();
-        prt(info,"restarting   %s",data.ip.toStdString().data());
+        prt(info,"**********starting   %s***********",data.ip.toStdString().data());
         //  QThread::msleep(1000);
 
         start_video_src();
@@ -304,7 +306,8 @@ public:
     }
     ~CameraManager(){
 
-        for(int i=0;i<p_cfg->data.camera_amount;i++){
+     //  for(int i=0;i<p_cfg->data.camera_amount;i++){
+            for(int i=p_cfg->data.camera_amount-1;i>=0;i--){
             // delete cams[i];
             del_camera_internal(i);
         }
