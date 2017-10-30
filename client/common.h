@@ -203,8 +203,9 @@ inline void add_title(char *label,char *str,int line,char *src_file)
             ||strcmp(label,"debug_sig")==0 )
 #else defined( LOG_LEVEL3)
     if(strcmp(label,"info")==0\
+            ||strcmp(label,"frame_rate----1")==0 \
             ||strcmp(label,"debug--1")==0 \
-            ||strcmp(label,"err")==0 \
+                ||strcmp(label,"err")==0 \
             ||strcmp(label,"info_loop------1")==0 \
             ||strcmp(label,"err")==0 \
             ||strcmp(label,"exit")==0 \

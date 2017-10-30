@@ -180,7 +180,7 @@ public slots:
 
     void tick_check_frame_rate()
     {
-        prt(info,"video %s frame rate %d",p_video_src->get_url(),tick-tick_last);
+        prt(frame_rate,"video %s frame rate %d",p_video_src->get_url(),tick-tick_last);
         tick_last=tick;
     }
 
