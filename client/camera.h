@@ -38,7 +38,7 @@ public:
     {
         prt(info,"starting camera %s",data.ip.toStdString().data());
         quit_work=false;
-
+        src_url.append(dat.ip);
         tick_last=tick=0;// use tick to calculate eclipsed time
         tick_work=0;
 
@@ -78,15 +78,17 @@ public:
         //        connect(timer,SIGNAL(timeout()),this,SLOT(tick_check_frame_rate()));
         //        timer->start(1000);
 
-        work_lock.lock();// lock need because we use videosrc(function "run" use it too)
+   //     work_lock.lock();// lock need because we use videosrc(function "run" use it too)
         p_video_src=new VideoSrc(data.ip);
+        p_video_src->get_url();
+
 
         //        connect(this,SIGNAL(restart_source()),this,SLOT(restart_video()),Qt::BlockingQueuedConnection);
         //  connect(this,SIGNAL(restart_source()),this,SLOT(restart_video()));
         // quit_work=false;
         //   this->start(NormalPriority);
         //    connect(this,SIGNAL(restart_source()),this,SLOT(restart_video()));
-        work_lock.unlock();
+     //   work_lock.unlock();
 
     }
     void close_video_src()
@@ -95,14 +97,14 @@ public:
         //        delete timer;
 
         // quit_work=true;
-        work_lock.lock();//
+   //     work_lock.lock();//
         //  disconnect(this,SIGNAL(restart_source()),this,SLOT(restart_video()));
         //   this->exit();
         //   this->quit();//tell run to quit, TODO, why i need quit while manully?
         //  this->wait();// wait run  quit
         delete p_video_src;
         p_video_src=NULL;
-        work_lock.unlock();
+      //  work_lock.unlock();
     }
 
     //    void create_video_src()
@@ -182,12 +184,12 @@ public slots:
 
     void tick_check_frame_rate()
     {
-//        int rate=tick-tick_last;
-//        prt(frame_rate,"video %s frame rate %d",p_video_src->get_url(),rate);
-//        if(rate<10){
-//            prt(info,"video %s frame rate  drop to %d",p_video_src->get_url(),rate);
-//        }
-//        tick_last=tick;
+        int rate=tick-tick_last;
+        prt(frame_rate,"video %s frame rate %d",src_url.toStdString().data(),rate);
+        if(rate<10){
+            prt(info,"video %s frame rate  drop to %d",src_url.toStdString().data(),rate);
+        }
+        tick_last=tick;
     }
 
     //    void source_connected()
@@ -223,7 +225,7 @@ public slots:
     */
     bool work()
     {
-        work_lock.lock();
+    //    work_lock.lock();
         QByteArray ba;
         ba.clear();
         //   ba.append(p_video_src->get_url());
@@ -266,7 +268,7 @@ public slots:
             tick++;
             //  prt(info,"tick now %d  %d" ,  tick,tick_last);
         }
-        work_lock.unlock();
+      //  work_lock.unlock();
         //prt(info,"ret %d",ret);
         return ret;
     }
@@ -275,13 +277,14 @@ private:
     camera_data_t data;//data that camera need
     //    QTimer *timer;//do work per xx micro seconds
     VideoSrc*p_video_src;//camera frame source
+    QString src_url;
     VideoHandler video_handler;//camera frame handler
     int tick;
     int tick_last;
     int tick_work;
     //   bool connected=false;
     QList <IplImage> frame_list;
-    QMutex work_lock;
+ //   QMutex work_lock;//video source in critical area,be careful
     Mat mt;
     //   QThread fetch_thread;
 };
